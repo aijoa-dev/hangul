@@ -111,22 +111,49 @@ class HangulInput {
     }
   }
 
+  // void _addToJong(String newChar, HangulSyllable currentSyllable) {
+  //   if (_jongCombinations.containsKey(currentSyllable.jong! + newChar)) {
+  //     currentSyllable.jong = _jongCombinations[currentSyllable.jong! + newChar];
+  //     _replaceFinalCharacter(currentSyllable.toString());
+  //   } else if (isValidJung(newChar)) {
+  //     if (_jongCombinations.containsValue(currentSyllable.jong)) {
+  //       final combination = _jongCombinations.keys
+  //           .firstWhere((k) => _jongCombinations[k] == currentSyllable.jong);
+  //
+  //       final newFinalSyllable = HangulSyllable(combination[1], newChar);
+  //       currentSyllable.jong = combination[0];
+  //       _replaceFinalCharacter(
+  //           currentSyllable.toString() + newFinalSyllable.toString());
+  //     } else if (isValidCho(currentSyllable.jong)) {
+  //       final newFinalSyllable = HangulSyllable(currentSyllable.jong!, newChar);
+  //       currentSyllable.jong = null;
+  //       _replaceFinalCharacter(
+  //           currentSyllable.toString() + newFinalSyllable.toString());
+  //     } else {
+  //       _concatCharacter(newChar);
+  //     }
+  //   } else {
+  //     _concatCharacter(newChar);
+  //   }
+  // }
+
   void _addToJong(String newChar, HangulSyllable currentSyllable) {
     if (_jongCombinations.containsKey(currentSyllable.jong! + newChar)) {
       currentSyllable.jong = _jongCombinations[currentSyllable.jong! + newChar];
       _replaceFinalCharacter(currentSyllable.toString());
     } else if (isValidJung(newChar)) {
-      if (_jongCombinations.containsValue(currentSyllable.jong)) {
+      if (isValidCho(currentSyllable.jong)) {
+        final newFinalSyllable = HangulSyllable(currentSyllable.jong!, newChar);
+        currentSyllable.jong = null;
+        _replaceFinalCharacter(
+            currentSyllable.toString() + newFinalSyllable.toString());
+
+      } else if (_jongCombinations.containsValue(currentSyllable.jong)) {
         final combination = _jongCombinations.keys
             .firstWhere((k) => _jongCombinations[k] == currentSyllable.jong);
 
         final newFinalSyllable = HangulSyllable(combination[1], newChar);
         currentSyllable.jong = combination[0];
-        _replaceFinalCharacter(
-            currentSyllable.toString() + newFinalSyllable.toString());
-      } else if (isValidCho(currentSyllable.jong)) {
-        final newFinalSyllable = HangulSyllable(currentSyllable.jong!, newChar);
-        currentSyllable.jong = null;
         _replaceFinalCharacter(
             currentSyllable.toString() + newFinalSyllable.toString());
       } else {
